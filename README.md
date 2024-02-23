@@ -1,12 +1,22 @@
 <h1 align="center">DM113 - PalApi</h1>
 
-Repositório para armazenar o projeto final da disciplina DM113 - Desenvolvimento de serviço SOAP com WCF em C#. O projeto consiste em um serviço de gerenciamento de Pals de Palworld e contém as seguintes funcionalidades:
+Repositório para armazenar o projeto final da disciplina **DM113 - Desenvolvimento de serviço SOAP com WCF em C#**. O projeto consiste em um serviço de gerenciamento de Pals de Palworld e contém as seguintes funcionalidades:
 
 - **Cadastro de Pals**: Criação de um novo Pal
 - **Listagem de Pals**: Listagem de todos os Pals cadastrados
 - **Busca de Pals**: Busca de um Pal específico
 - **Atualização de Pals**: Atualização de um Pal específico
 - **Exclusão de Pals**: Exclusão de um Pal específico
+
+---
+
+### 🛠 Tecnologias
+
+As seguintes ferramentas foram usadas na construção do projeto:
+
+- **[.NET 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)**
+- **[Swagger](https://swagger.io/)**
+- **[SQLite](https://www.sqlite.org/index.html)**
 
 ---
 
@@ -48,6 +58,26 @@ O servidor inciará na porta:5265 - acesse <http://localhost:5265>
 
 - Foi adicionado na raiz do projeto o arquivo `DM113.postman_collection.json` que contém as requisições para testar o servidor.
 - É possível acessar o swagger do projeto através do link <http://localhost:5265/swagger/index.html>
+
+---
+
+## 👥 Autor
+
+<h4>
+<img style="border-radius: 5%; margin-right: 30px" src="https://avatars.githubusercontent.com/Brendhon" width="120px;" alt="Avatar"/><br>
+Brendhon Moreira
+</h4>
+
+
+[![Linkedin Badge](https://img.shields.io/badge/-Brendhon-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/brendhon-moreira)](https://www.linkedin.com/in/brendhon-moreira)
+
+<h4>
+<img style="border-radius: 5%; margin-right: 30px" src="https://avatars.githubusercontent.com/u/50179542?v=4" width="120px;" alt="Avatar Aguinaldo"/><br>
+Aguinaldo Feliciano de Souza
+</h4>
+
+
+[![Linkedin Badge](https://img.shields.io/badge/-Aguinaldo-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/aguinaldo-fs)](https://www.linkedin.com/in/aguinaldo-fs)
 
 ---
 
