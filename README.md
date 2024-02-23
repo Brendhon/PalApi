@@ -73,7 +73,7 @@ Brendhon Moreira
 
 <h4>
 <img style="border-radius: 5%; margin-right: 30px" src="https://avatars.githubusercontent.com/u/50179542?v=4" width="120px;" alt="Avatar Aguinaldo"/><br>
-Aguinaldo Feliciano de Souza
+Aguinaldo de Souza Júnior
 </h4>
 
 
