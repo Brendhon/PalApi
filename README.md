@@ -40,11 +40,14 @@ dotnet restore
 dotnet run
 ```
 
+O servidor inciará na porta:5265 - acesse <http://localhost:5265>
+
 ---
 
 ### 👀 Observações
 
 - Foi adicionado na raiz do projeto o arquivo `DM113.postman_collection.json` que contém as requisições para testar o servidor.
+- É possível acessar o swagger do projeto através do link <http://localhost:5265/swagger/index.html>
 
 ---
 
