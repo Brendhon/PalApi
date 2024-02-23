@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PalData;
 using PalModel;
-using Newtonsoft.Json;
 
 namespace PalApi.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class PalsController : Controller
+  public class PalsController(PalContext context) : Controller
   {
-    private readonly PalContext _context;
-
-    public PalsController(PalContext context)
-    {
-      _context = context;
-    }
+    private readonly PalContext _context = context;
 
     // GET: Pals
     // url: /api/pals
@@ -31,7 +21,7 @@ namespace PalApi.Controllers
       return Ok(await _context.Pals.ToListAsync());
     }
 
-    // GET: Pals/Details/5
+    // GET: /api/pals/5
     [HttpGet("{id}")]
     public async Task<IActionResult> Details(int? id)
     {
@@ -50,81 +40,104 @@ namespace PalApi.Controllers
       return Ok(pal);
     }
 
-    // PUT: Pals/Edit/5
+    // PUT: /api/pals/5 ignore id in the body
     [HttpPut("{id}")]
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int? id, [Bind("Name,Type")] Pal pal)
     {
-      if (id == null)
+      if (id == null || pal == null)
       {
-        return NotFound();
+        return BadRequest(new { error = "Id and pal are required" });
       }
 
-      var pal = await _context.Pals.FindAsync(id);
-      if (pal == null)
-      {
-        return NotFound();
-      }
-
-      return Ok(pal);
-    }
-
-    // POST: Pals/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type")] Pal pal)
-    {
       if (id != pal.Id)
       {
-        return NotFound();
+        return BadRequest(new { error = "Id mismatch" });
       }
 
-      if (ModelState.IsValid)
+      if (!ModelState.IsValid)
       {
-        try
-        {
-          _context.Update(pal);
-          await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-          if (!PalExists(pal.Id))
-          {
-            return NotFound();
-          }
-          else
-          {
-            throw;
-          }
-        }
-        return RedirectToAction(nameof(Index));
+        return BadRequest(ModelState);
       }
+
+      try
+      {
+        _context.Update(pal);
+        await _context.SaveChangesAsync();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!await PalExists(pal.Id))
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+
+      // Add the return statement here
       return Ok(pal);
     }
 
-    // DELETE: Pals/Delete/5
+    // POST: /api/pals
+    [HttpPost]
+    public async Task<IActionResult> Create([Bind("Id,Name,Type")] Pal pal)
+    {
+      // Validate the model
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
+
+      // Check if the pal already exists
+      if (await PalExists(pal.Id))
+      {
+        // Return a 400 Bad Request - with json error message
+        return BadRequest(new { error = "Pal already exists" });
+      }
+
+      // Add the new pal to the database
+      _context.Add(pal);
+
+      // Save the changes
+      await _context.SaveChangesAsync();
+
+      // Return the new pal
+      return CreatedAtAction("Details", new { id = pal.Id }, pal);
+    }
+
+    // DELETE: /api/pals/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int? id)
     {
+      // Check if the id is null
       if (id == null)
       {
         return NotFound();
       }
 
-      var pal = await _context.Pals
-          .FirstOrDefaultAsync(m => m.Id == id);
+      // Get the pal from the database
+      var pal = await _context.Pals.FirstOrDefaultAsync(m => m.Id == id);
+
+      // Check if the pal exists
       if (pal == null)
       {
         return NotFound();
       }
+      else // Delete the pal
+      {
+        _context.Pals.Remove(pal);
+        await _context.SaveChangesAsync();
+      }
 
+      // Return the deleted pal
       return Ok(pal);
     }
 
-    private bool PalExists(int id)
+    private async Task<bool> PalExists(int id)
     {
-      return _context.Pals.Any(e => e.Id == id);
+      return await _context.Pals.AnyAsync(e => e.Id == id);
     }
   }
 }

@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PalModel;
 
 public partial class Pal
 {
-    public int Id { get; set; }
+  [Key]
+  [Required(ErrorMessage = "Id is required")]
+  public int Id { get; set; }
 
-    public string? Name { get; set; }
+  [Required(ErrorMessage = "Name is required")]
+  public required string Name { get; set; }
 
-    public string? Type { get; set; }
+  [Required(ErrorMessage = "Type is required")]
+  public required string Type { get; set; }
 }
